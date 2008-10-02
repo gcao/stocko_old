@@ -1,0 +1,27 @@
+= Notes
+
+== Design
+
+It adopts an architecture similar to what jQuery has, with features below:
+
+* easily extensible
+* chained method call support
+
+== Core Concepts / Components
+
+=== Manager
+
+=== Data Source
+
+=== Stock List
+
+=== Stock Filter
+
+=== Stock
+
+=== Stock Price
+
+== Use Cases
+
+== Misc
+

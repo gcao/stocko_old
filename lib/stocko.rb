@@ -1,0 +1,1 @@
+require 'stocko/core/manager'

@@ -1,0 +1,6 @@
+bin/stocko
+CHANGELOG
+lib/stocko.rb
+Rakefile
+spec/spec_helper.rb
+Manifest

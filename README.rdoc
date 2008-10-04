@@ -8,9 +8,7 @@
 
 == USAGE
 
-== URLS:
-
-== LICENSE:
+== LICENSE
 
 (The MIT License)
 

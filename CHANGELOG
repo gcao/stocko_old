@@ -1,1 +1,6 @@
+v0.0.2 
+ * environment
+ * database
+ * simple model (using DataMapper)
+
 v0.0.1 initial version

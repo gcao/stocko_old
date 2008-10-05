@@ -1,0 +1,60 @@
+== Requirements
+
+* Data Mapper
+* RSpec
+* Postgres
+
+== Setup
+
+=== Postgres
+
+http://evang.eli.st/blog/2007/10/28/installing-postgres-8-2-on-leopard-includes-system-account
+
+* port install postgresql83
+* port install postgresql83-server
+* dscl . -list /Groups PrimaryGroupID | awk '{print $2}' | sort -n    ==> pick a group id (e.g. 503) which is not in use
+* dscl . -list /Users UniqueID | awk '{print $2}' | sort -n     ==> pick a user id (e.g. 503) which is not in use
+* dseditgroup -o create -i 503 -r "Postgres Users" postgres
+* dscl .
+<pre>
+create /Users/postgres
+create /Users/postgres UniqueID 503
+create /Users/postgres UserShell /bin/bash
+create /Users/postgres RealName "Postgres Administrator"
+create /Users/postgres NFSHomeDirectory /usr/local/postgres
+create /Users/postgres PrimaryGroupID 503
+create /Users/postgres Password *
+quit
+</pre>
+* mkdir -p /usr/local/postgres/log
+* chown -R postgres:postgres /usr/local/postgres
+* mkdir -p /usr/local/postgres/data
+* chown -R postgres:postgres /usr/local/postgres/data
+* initdb -D /usr/local/postgres/data/    as postgres user
+* update /opt/local/etc/LaunchDaemons/org.macports.postgresql83-server/postgresql83-server.wrapper with
+<pre>
+...
+PGDIR=/usr/local/postgres
+...
+Start()
+{
+	cd ${PGDIR} && su postgres -c "${PGCTL} -D ${PGDIR}/data start -l ${PGDIR}/log/postgres.log"
+}
+...
+Stop()
+{
+	cd ${PGDIR} && su postgres -c "${PGCTL} -D ${PGDIR}/data stop -s -m fast"
+}
+...
+</pre>
+* launchctl load -w /Library/LaunchDaemons/org.macports.postgresql83-server.plist
+* *NOTE*: Assumption that this .plist file points to your .wrapper file for start, stop and restart
+* Run below commands to create stocko username and databases
+<pre>
+sudo su postgres
+createuser stocko
+createdb -U stocko stocko_dev
+createdb -U stocko stocko_test
+</pre>
+
+===
